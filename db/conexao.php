@@ -9,6 +9,12 @@ class Database
     private function __construct()
     {
         try {
+            $tempPdo = new PDO('mysql:host=' . DB_HOST, DB_USER, DB_PASS);
+            $tempPdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $tempPdo->exec("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "` 
+                            CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+
             $this->pdo = new PDO(DB_DSN, DB_USER, DB_PASS);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
@@ -34,7 +40,6 @@ class Database
 
     private function createTables()
     {
-        // Verifica se a tabela users existe
         $stmt = $this->pdo->query(
             "SELECT COUNT(*) FROM information_schema.TABLES 
              WHERE TABLE_SCHEMA = '" . DB_NAME . "' 
@@ -52,7 +57,6 @@ class Database
             $this->pdo->exec($sqlUsers);
         }
 
-        // Verifica se a tabela produtos existe
         $stmt = $this->pdo->query(
             "SELECT COUNT(*) FROM information_schema.TABLES 
              WHERE TABLE_SCHEMA = '" . DB_NAME . "' 
@@ -75,8 +79,6 @@ class Database
     }
 }
 
-// Cria a instância global
 $db = Database::getInstance();
 
-// Mantém compatibilidade com o código antigo
 $pdo = $db->getConnection();
