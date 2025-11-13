@@ -98,13 +98,31 @@ body {
     color: #111827;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.section-produtos {
+    margin-bottom: 3rem;
+}
+
+.section-produtos:last-child {
+    margin-bottom: 0;
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+    border-left: 4px solid #3b82f6;
 }
 
 .table-container {
     overflow-x: auto;
     border-radius: 0.75rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
 }
 
 table {
@@ -162,6 +180,19 @@ td.descricao-col {
     max-width: 20rem;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+td.privado-col {
+    font-weight: 500;
+}
+
+td.privado-col {
+    color: #ef4444;
+}
+
+td.usuario-col {
+    color: #6366f1;
+    font-weight: 500;
 }
 
 .actions-cell {

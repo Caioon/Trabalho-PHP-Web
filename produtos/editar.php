@@ -15,8 +15,8 @@ try {
         throw new Exception("Erro de configuração: Conexão com o banco de dados ($pdo) não está disponível.");
     }
     
-    $stmt = $pdo->prepare("SELECT * FROM produtos WHERE id = ?");
-    $stmt->execute([$id]);
+    $stmt = $pdo->prepare("SELECT * FROM produtos WHERE id = ? AND usuario_id = ?");
+    $stmt->execute([$id, $_SESSION['usuario_id']]);
     $produto = $stmt->fetch();
 
     if (!$produto) {
@@ -32,16 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $produto) {
     $nome = trim($_POST['nome']);
     $preco = str_replace(',', '.', $_POST['preco']);
     $descricao = trim($_POST['descricao']);
+    $privado = isset($_POST['privado']) ? 1 : 0;
 
     if (!empty($nome) && is_numeric($preco)) {
         try {
-            $stmt = $pdo->prepare("UPDATE produtos SET nome = ?, preco = ?, descricao = ? WHERE id = ?");
-            if ($stmt->execute([$nome, $preco, $descricao, $id])) {
+            $stmt = $pdo->prepare("UPDATE produtos SET nome = ?, preco = ?, descricao = ?, privado = ? WHERE id = ? AND usuario_id = ?");
+            if ($stmt->execute([$nome, $preco, $descricao, $privado, $id, $_SESSION['usuario_id']])) {
                 $mensagem = "✅ Produto atualizado com sucesso!";
                 
                 $produto['nome'] = $nome;
                 $produto['preco'] = $preco;
                 $produto['descricao'] = $descricao;
+                $produto['privado'] = $privado;
             } else {
                 $mensagem = "❌ Erro ao atualizar produto.";
             }
@@ -117,6 +119,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $produto) {
                 <textarea id="descricao" name="descricao" rows="4"
                           class="form-textarea form-input-green"
                           placeholder="Detalhes sobre o produto"><?php echo htmlspecialchars($produto['descricao']); ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="privado" id="privado" value="1" <?php echo $produto['privado'] ? 'checked' : ''; ?>>
+                    <span>Tornar produto privado. Isso impede que outros usuários vejam seus produtos cadastrados</span>
+                </label>
             </div>
 
             <div class="btn-actions">

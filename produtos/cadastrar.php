@@ -6,21 +6,24 @@ $mensagem = '';
 $nome = '';
 $preco = '';
 $descricao = '';
+$privado = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = trim($_POST['nome']);
     $preco = str_replace(',', '.', $_POST['preco']);
     $descricao = trim($_POST['descricao']);
+    $privado = isset($_POST['privado']) ? 1 : 0;
 
     if (!empty($nome) && is_numeric($preco)) {
         try {
-            $stmt = $pdo->prepare("INSERT INTO produtos (nome, preco, descricao) VALUES (?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO produtos (nome, preco, descricao, privado, usuario_id) VALUES (?, ?, ?, ?, ?)");
             
-            if ($stmt->execute([$nome, $preco, $descricao])) {
+            if ($stmt->execute([$nome, $preco, $descricao, $privado, $_SESSION['usuario_id']])) {
                 $mensagem = "✅ Produto cadastrado com sucesso!";
                 $nome = '';
                 $preco = '';
                 $descricao = '';
+                $privado = false;
             } else {
                 $mensagem = "❌ Erro ao cadastrar produto.";
             }
@@ -95,6 +98,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <textarea id="descricao" name="descricao" rows="4"
                           class="form-textarea form-input-green"
                           placeholder="Detalhes sobre o produto..."><?php echo htmlspecialchars($descricao); ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="privado" id="privado" value="1" <?php echo $privado ? 'checked' : ''; ?>>
+                    <span>Tornar produto privado. Isso impede que outros usuários vejam seus produtos cadastrados</span>
+                </label>
             </div>
 
             <div class="btn-actions">

@@ -34,6 +34,7 @@ class Database
 
     private function createTables()
     {
+        // Verifica se a tabela users existe
         $stmt = $this->pdo->query(
             "SELECT COUNT(*) FROM information_schema.TABLES 
              WHERE TABLE_SCHEMA = '" . DB_NAME . "' 
@@ -51,6 +52,7 @@ class Database
             $this->pdo->exec($sqlUsers);
         }
 
+        // Verifica se a tabela produtos existe
         $stmt = $this->pdo->query(
             "SELECT COUNT(*) FROM information_schema.TABLES 
              WHERE TABLE_SCHEMA = '" . DB_NAME . "' 
@@ -63,13 +65,18 @@ class Database
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 nome VARCHAR(255) NOT NULL,
                 preco DECIMAL(10, 2) NOT NULL,
-                descricao TEXT
+                descricao TEXT,
+                privado TINYINT(1) DEFAULT 0,
+                usuario_id INT NOT NULL,
+                FOREIGN KEY (usuario_id) REFERENCES users(id) ON DELETE CASCADE
             )";
             $this->pdo->exec($sqlProdutos);
         }
     }
 }
 
+// Cria a instância global
 $db = Database::getInstance();
 
+// Mantém compatibilidade com o código antigo
 $pdo = $db->getConnection();

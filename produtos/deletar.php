@@ -2,32 +2,29 @@
 require_once '../auth/verifica_login.php';
 require_once '../db/conexao.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+if (!isset($_GET['id'])) {
     header("Location: listar.php");
     exit;
 }
 
-if (!isset($_POST['id']) || !is_numeric($_POST['id']) || $_POST['id'] <= 0) {
-    header("Location: listar.php?erro=id_invalido");
-    exit;
-}
+$id = (int) $_GET['id'];
 
-$id = (int) $_POST['id'];
-
-$stmt = $pdo->prepare("SELECT * FROM produtos WHERE id = ?");
-$stmt->execute([$id]);
+$stmt = $pdo->prepare("SELECT * FROM produtos WHERE id = ? AND usuario_id = ?");
+$stmt->execute([$id, $_SESSION['usuario_id']]);
 $produto = $stmt->fetch();
 
 if (!$produto) {
-    header("Location: listar.php?erro=produto_nao_encontrado");
+    echo "<p style='text-align:center; font-family:Arial;'>Produto não encontrado ou você não tem permissão para excluí-lo.</p>";
+    echo "<p style='text-align:center;'><a href='listar.php'>Voltar</a></p>";
     exit;
 }
 
-$stmt = $pdo->prepare("DELETE FROM produtos WHERE id = ?");
-if ($stmt->execute([$id])) {
+$stmt = $pdo->prepare("DELETE FROM produtos WHERE id = ? AND usuario_id = ?");
+if ($stmt->execute([$id, $_SESSION['usuario_id']])) {
     header("Location: listar.php?msg=excluido");
     exit;
 } else {
-    header("Location: listar.php?erro=falha_exclusao");
-    exit;
+    echo "<p style='text-align:center; font-family:Arial;'>Erro ao excluir produto.</p>";
+    echo "<p style='text-align:center;'><a href='listar.php'>Voltar</a></p>";
 }
+?>
