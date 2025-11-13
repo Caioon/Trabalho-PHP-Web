@@ -1,21 +1,25 @@
 <?php
-require_once '../includes/verifica_login.php';
+require_once '../auth/verifica_login.php';
 require_once '../db/conexao.php';
 
-if (!isset($_GET['id'])) {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: listar.php");
     exit;
 }
 
-$id = (int) $_GET['id'];
+if (!isset($_POST['id']) || !is_numeric($_POST['id']) || $_POST['id'] <= 0) {
+    header("Location: listar.php?erro=id_invalido");
+    exit;
+}
+
+$id = (int) $_POST['id'];
 
 $stmt = $pdo->prepare("SELECT * FROM produtos WHERE id = ?");
 $stmt->execute([$id]);
 $produto = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$produto) {
-    echo "<p style='text-align:center; font-family:Arial;'>Produto não encontrado.</p>";
-    echo "<p style='text-align:center;'><a href='listar.php'>Voltar</a></p>";
+    header("Location: listar.php?erro=produto_nao_encontrado");
     exit;
 }
 
@@ -24,7 +28,6 @@ if ($stmt->execute([$id])) {
     header("Location: listar.php?msg=excluido");
     exit;
 } else {
-    echo "<p style='text-align:center; font-family:Arial;'>Erro ao excluir produto.</p>";
-    echo "<p style='text-align:center;'><a href='listar.php'>Voltar</a></p>";
+    header("Location: listar.php?erro=falha_exclusao");
+    exit;
 }
-?>

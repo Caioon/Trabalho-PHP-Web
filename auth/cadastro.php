@@ -50,86 +50,81 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        input:focus {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-        }
-    </style>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/cadastro.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body>
 
-    <div class="w-full max-w-md bg-white rounded-xl shadow-2xl p-8 space-y-6 transform hover:shadow-3xl transition duration-300">
+    <div class="container-center">
+        <div class="card">
 
         <div class="text-center">
-            <h1 class="text-3xl font-extrabold text-gray-900">
+            <h1 class="card-title">
                 Criar Nova Conta
             </h1>
-            <p class="text-md text-gray-600 mt-2">
+            <p class="cadastro-subtitle">
                 Preencha os dados abaixo para se cadastrar no sistema.
             </p>
         </div>
 
         <?php if (!empty($sucesso)): ?>
-            <div class="p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg" role="alert">
-                <p class="font-medium"><?php echo $sucesso; ?></p>
+            <div class="alert alert-success">
+                <p><?php echo $sucesso; ?></p>
             </div>
         <?php endif; ?>
 
         <?php if (!empty($erro)): ?>
-            <div class="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg" role="alert">
-                <p class="font-medium"><?php echo htmlspecialchars($erro); ?></p>
+            <div class="alert alert-error">
+                <p><?php echo htmlspecialchars($erro); ?></p>
             </div>
         <?php endif; ?>
 
         <form class="space-y-6" method="POST" action="cadastro.php">
             
-            <div>
-                <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">
+            <div class="form-group">
+                <label for="nome" class="form-label">
                     Nome Completo
                 </label>
                 <input id="nome" name="nome" type="text" autocomplete="name" required
-                       class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150"
+                       class="form-input"
                        placeholder="Seu nome">
             </div>
 
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+            <div class="form-group">
+                <label for="email" class="form-label">
                     E-mail
                 </label>
                 <input id="email" name="email" type="email" autocomplete="email" required
-                       class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150"
+                       class="form-input"
                        placeholder="email@exemplo.com">
             </div>
 
-            <div>
-                <label for="senha" class="block text-sm font-medium text-gray-700 mb-1">
+            <div class="form-group">
+                <label for="senha" class="form-label">
                     Senha
                 </label>
                 <input id="senha" name="senha" type="password" autocomplete="new-password" required
-                       class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150"
+                       class="form-input"
                        placeholder="Crie uma senha forte">
             </div>
 
-            <div class="pt-2">
-                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transform hover:scale-[1.01] transition duration-200 ease-in-out">
+            <div>
+                <button type="submit" class="btn btn-indigo">
                     Cadastrar
                 </button>
             </div>
         </form>
 
-        <div class="text-center text-sm">
-            <p class="text-gray-600">
+        <div class="login-link">
+            <p>
                 Já tem uma conta? 
-                <a href="../index.php" class="font-medium text-blue-600 hover:text-blue-800">
+                <a href="../index.php">
                     Acesse aqui.
                 </a>
             </p>
         </div>
 
+    </div>
     </div>
 
 </body>

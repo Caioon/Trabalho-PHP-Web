@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/verifica_login.php';
+require_once '../auth/verifica_login.php';
 require_once '../db/conexao.php';
 
 if (!isset($_GET['id'])) {
@@ -60,26 +60,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $produto) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Produto: <?php echo htmlspecialchars($produto['nome'] ?? 'Erro'); ?></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-        }
-        input:focus, textarea:focus {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-        }
-    </style>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/produtos-form.css">
 </head>
-<body class="min-h-screen flex items-start md:items-center justify-center p-4">
+<body>
 
-    <div class="w-full max-w-lg bg-white rounded-xl shadow-2xl p-8 space-y-6 transform hover:shadow-3xl transition duration-300 mt-8 md:mt-0">
+    <div class="container-produtos">
+        <div class="card-produtos">
 
-        <div class="text-center border-b pb-4">
-            <h1 class="text-3xl font-extrabold text-gray-900">
+        <div class="produtos-header">
+            <h1 class="produtos-title">
                 Editar Produto
             </h1>
-            <p class="text-xl text-blue-600 mt-2 font-semibold">
+            <p class="produto-id-info">
                 ID #<?php echo htmlspecialchars($produto['id'] ?? 'N/A'); ?>: <?php echo htmlspecialchars($produto['nome'] ?? 'Produto Inválido'); ?>
             </p>
         </div>
@@ -87,58 +80,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $produto) {
         <?php if (!empty($mensagem)): ?>
             <?php 
                 $tipo = strpos($mensagem, '✅') !== false ? 'success' : (strpos($mensagem, '❌') !== false ? 'error' : 'warning');
-                $cor = ['success' => 'green', 'error' => 'red', 'warning' => 'yellow'][$tipo];
+                $corClass = ['success' => 'alert-green', 'error' => 'alert-red', 'warning' => 'alert-yellow'][$tipo];
             ?>
-            <div class="p-4 bg-<?php echo $cor; ?>-100 border border-<?php echo $cor; ?>-400 text-<?php echo $cor; ?>-700 rounded-lg shadow-md" role="alert">
-                <p class="font-medium"><?php echo htmlspecialchars($mensagem); ?></p>
+            <div class="alert-produtos <?php echo $corClass; ?>">
+                <p><?php echo htmlspecialchars($mensagem); ?></p>
             </div>
         <?php endif; ?>
 
         <?php if ($produto): ?>
         <form class="space-y-6" method="POST" action="editar.php?id=<?php echo $id; ?>">
             
-            <div>
-                <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">
-                    Nome do Produto <span class="text-red-500">*</span>
+            <div class="form-group">
+                <label for="nome" class="form-label">
+                    Nome do Produto <span class="text-required">*</span>
                 </label>
                 <input id="nome" name="nome" type="text" required
                        value="<?php echo htmlspecialchars($produto['nome']); ?>"
-                       class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150"
+                       class="form-input form-input-green"
                        placeholder="Nome completo do produto">
             </div>
 
-            <div>
-                <label for="preco" class="block text-sm font-medium text-gray-700 mb-1">
-                    Preço (R$) <span class="text-red-500">*</span>
+            <div class="form-group">
+                <label for="preco" class="form-label">
+                    Preço (R$) <span class="text-required">*</span>
                 </label>
                 <input id="preco" name="preco" type="text" inputmode="numeric" required
                        value="<?php echo htmlspecialchars(number_format($produto['preco'], 2, ',', '')); ?>"
-                       class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150"
+                       class="form-input form-input-green"
                        placeholder="Ex: 19,99">
             </div>
 
-            <div>
-                <label for="descricao" class="block text-sm font-medium text-gray-700 mb-1">
+            <div class="form-group">
+                <label for="descricao" class="form-label">
                     Descrição
                 </label>
                 <textarea id="descricao" name="descricao" rows="4"
-                          class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150"
+                          class="form-textarea form-input-green"
                           placeholder="Detalhes sobre o produto"><?php echo htmlspecialchars($produto['descricao']); ?></textarea>
             </div>
 
-            <div class="pt-2 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <div class="btn-actions">
                 
-                <button type="submit" class="w-full sm:w-1/2 flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transform hover:scale-[1.01] transition duration-200 ease-in-out">
+                <button type="submit" class="btn btn-blue">
                     Salvar Alterações
                 </button>
 
-                <a href="listar.php" class="w-full sm:w-1/2 flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-150 items-center">
+                <a href="listar.php" class="btn btn-back">
                     Voltar para a Lista
                 </a>
             </div>
         </form>
         <?php endif; ?>
 
+    </div>
     </div>
 
 </body>
