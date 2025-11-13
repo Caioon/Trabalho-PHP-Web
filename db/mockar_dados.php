@@ -68,7 +68,7 @@ try {
 
     $_SESSION['mensagem_mock'] = [
         'tipo' => 'success',
-        'texto' => "✅ Dados mockados com sucesso! Criados 3 usuários e " . $produtosCriados . " produtos. Senhas: 123"
+        'texto' => "✅ Dados mockados com sucesso! Criados 3 usuários e " . $produtosCriados . " produtos."
     ];
 
 } catch (Exception $e) {

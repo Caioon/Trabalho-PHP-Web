@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </a>
 
                 <div class="btn-mock-group" />
-                    <form method="POST" action="index.php" onsubmit="return confirm('⚠️ Tem certeza que deseja criar dados de teste? Isso adicionará usuários e produtos fictícios ao banco de dados.');" style="flex: 1;">
+                    <form method="POST" action="index.php" onsubmit="return confirm('⚠️ Tem certeza que deseja criar dados de teste? Veja mais informações clicando no botão ao lado do botão de mockar dados');" style="flex: 1;">
                         <input type="hidden" name="mockar_dados" value="1">
                         <button type="submit" class="btn btn-mock">
                             🎲 Mockar Dados para Testar
