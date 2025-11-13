@@ -7,12 +7,10 @@ if (!isset($pdo)) {
 
 try {
     if (isset($pdo)) {
-        // Buscar produtos do usuário logado (públicos e privados)
         $stmt = $pdo->prepare("SELECT * FROM produtos WHERE usuario_id = ? ORDER BY id DESC");
         $stmt->execute([$_SESSION['usuario_id']]);
         $meusProdutos = $stmt->fetchAll();
 
-        // Buscar produtos públicos de outros usuários
         $stmt = $pdo->prepare("
             SELECT p.*, u.nome as usuario_nome 
             FROM produtos p 
@@ -71,7 +69,6 @@ try {
             Catálogo de Produtos
         </h1>
 
-        <!-- TABELA A: Meus Produtos -->
         <section class="section-produtos">
             <h2 class="section-subtitle">Produtos cadastrados por você</h2>
 
@@ -125,7 +122,6 @@ try {
             <?php endif; ?>
         </section>
 
-        <!-- TABELA B: Produtos de Outros Usuários -->
         <section class="section-produtos">
             <h2 class="section-subtitle">Produtos públicos cadastrados por outros usuários</h2>
 

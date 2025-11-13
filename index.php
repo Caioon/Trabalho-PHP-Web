@@ -41,12 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     elseif (isset($_POST['mockar_dados'])) {
-        // Redireciona para o script de mockar
         header("Location: db/mockar_dados.php");
         exit;
     }
     elseif (isset($_POST['limpar_produtos'])) {
-        // Redireciona para o script de limpar
         header("Location: db/limpar_produtos.php");
         exit;
     }
@@ -104,7 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </button>
                     </form>
 
-                    <!-- Botão de informação -->
                     <a href="#modal-info" class="btn btn-mock btn-info" title="Informações sobre o mock" style="display: flex; align-items: center; justify-content: center;">
                         ℹ️
                     </a>
@@ -188,7 +185,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     </div>
 
-    <!-- Modal de informações -->
     <div id="modal-info" class="modal">
         <div class="modal-content">
             <h2>ℹ️ Informações do Mock</h2>
