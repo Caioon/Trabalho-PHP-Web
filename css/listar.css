@@ -79,6 +79,24 @@ body {
     background-color: #f9fafb;
 }
 
+.btn-mock {
+    background-color: #8b5cf6;
+    color: white;
+}
+
+.btn-mock:hover {
+    background-color: #7c3aed;
+}
+
+.btn-danger {
+    background-color: #dc2626;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #b91c1c;
+}
+
 .btn-new-product svg {
     width: 1.25rem;
     height: 1.25rem;

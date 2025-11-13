@@ -40,6 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: index.php");
         exit;
     }
+    elseif (isset($_POST['mockar_dados'])) {
+        // Redireciona para o script de mockar
+        header("Location: db/mockar_dados.php");
+        exit;
+    }
+    elseif (isset($_POST['limpar_produtos'])) {
+        // Redireciona para o script de limpar
+        header("Location: db/limpar_produtos.php");
+        exit;
+    }
 }
 ?>
 
@@ -74,10 +84,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </p>
             </div>
 
+            <?php if (isset($_SESSION['mensagem_mock'])): ?>
+                <div class="alert alert-<?php echo $_SESSION['mensagem_mock']['tipo']; ?>">
+                    <p><?php echo htmlspecialchars($_SESSION['mensagem_mock']['texto']); ?></p>
+                </div>
+                <?php unset($_SESSION['mensagem_mock']); ?>
+            <?php endif; ?>
+
             <div class="btn-group">
                 <a href="produtos/listar.php" class="btn btn-access">
                     Acessar o Sistema
                 </a>
+
+                <div class="btn-mock-group" />
+                    <form method="POST" action="index.php" onsubmit="return confirm('⚠️ Tem certeza que deseja criar dados de teste? Isso adicionará usuários e produtos fictícios ao banco de dados.');" style="flex: 1;">
+                        <input type="hidden" name="mockar_dados" value="1">
+                        <button type="submit" class="btn btn-mock">
+                            🎲 Mockar Dados para Testar
+                        </button>
+                    </form>
+
+                    <!-- Botão de informação -->
+                    <a href="#modal-info" class="btn btn-mock btn-info" title="Informações sobre o mock" style="display: flex; align-items: center; justify-content: center;">
+                        ℹ️
+                    </a>
+                </div>
+                  
+
+                <form method="POST" action="index.php" onsubmit="return confirm('⚠️ ATENÇÃO! Tem certeza que deseja deletar TODOS os produtos do banco de dados? Esta ação não pode ser desfeita!');">
+                    <input type="hidden" name="limpar_produtos" value="1">
+                    <button type="submit" class="btn btn-danger">
+                        🗑️ Apagar Todos os Produtos
+                    </button>
+                </form>
 
                 <form method="POST" action="index.php">
                     <input type="hidden" name="logout" value="1">
@@ -148,6 +187,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </div>
     </div>
+
+    <!-- Modal de informações -->
+    <div id="modal-info" class="modal">
+        <div class="modal-content">
+            <h2>ℹ️ Informações do Mock</h2>
+            <p>O script incluirá 3 novos usuários com 2 produtos cada:</p>
+            <ul>
+                <li><strong>caio@email.com</strong> — senha <code>123</code></li>
+                <li><strong>eduardo@email.com</strong> — senha <code>123</code></li>
+                <li><strong>felipe@email.com</strong> — senha <code>123</code></li>
+            </ul>
+
+            <a href="#" class="btn btn-secondary modal-close">Voltar</a>
+        </div>
+    </div>
+    
 
 </body>
 </html>
