@@ -8,7 +8,7 @@ if (!isset($pdo)) {
 try {
     if (isset($pdo)) {
         $stmt = $pdo->query("SELECT * FROM produtos ORDER BY id DESC");
-        $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $produtos = $stmt->fetchAll();
     } else {
         $produtos = [];
     }

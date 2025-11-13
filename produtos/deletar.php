@@ -16,7 +16,7 @@ $id = (int) $_POST['id'];
 
 $stmt = $pdo->prepare("SELECT * FROM produtos WHERE id = ?");
 $stmt->execute([$id]);
-$produto = $stmt->fetch(PDO::FETCH_ASSOC);
+$produto = $stmt->fetch();
 
 if (!$produto) {
     header("Location: listar.php?erro=produto_nao_encontrado");
